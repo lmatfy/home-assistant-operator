@@ -1,0 +1,46 @@
+# Configuration
+
+## Instance
+
+```yaml
+apiVersion: home-assistant.lmatfy.io/v1alpha1
+kind: Instance
+metadata:
+  name: home-assistant
+  namespace: default
+spec:
+  version: 2024.8
+  hostNetwork: true
+  env:
+    - name: TZ
+      value: UTC
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: feature.node.kubernetes.io/usb-ff_10c4_ea60.present
+            operator: Exists
+```
+
+### Ingress
+
+```yaml
+...
+spec:
+  ingress:
+    enabled: True
+    host: home-assistant.example.com
+    secretName: wildcard-example-com-tls
+    ingressClassName: public
+```
+
+### Persistence
+
+```yaml
+...
+spec:
+  persistence:
+    size: 1Gi
+    storageClassName: default
+```
