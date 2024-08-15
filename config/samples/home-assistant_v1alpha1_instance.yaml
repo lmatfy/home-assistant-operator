@@ -1,0 +1,9 @@
+apiVersion: home-assistant.lmatfy.io/v1alpha1
+kind: Instance
+metadata:
+  labels:
+    app.kubernetes.io/name: home-assistant-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: instance-sample
+spec:
+  # TODO(user): Add fields here

@@ -10,4 +10,14 @@ plugins:
   scorecard.sdk.operatorframework.io/v2: {}
 projectName: home-assistant-operator
 repo: github.com/lmatfy/home-assistant-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: lmatfy.io
+  group: home-assistant
+  kind: Instance
+  path: github.com/lmatfy/home-assistant-operator/api/v1alpha1
+  version: v1alpha1
 version: "3"

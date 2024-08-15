@@ -1,8 +1,11 @@
----
+# permissions for end users to edit instances.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: manager-role
+  labels:
+    app.kubernetes.io/name: home-assistant-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: instance-editor-role
 rules:
 - apiGroups:
   - home-assistant.lmatfy.io
@@ -19,14 +22,6 @@ rules:
 - apiGroups:
   - home-assistant.lmatfy.io
   resources:
-  - instances/finalizers
-  verbs:
-  - update
-- apiGroups:
-  - home-assistant.lmatfy.io
-  resources:
   - instances/status
   verbs:
   - get
-  - patch
-  - update

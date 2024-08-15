@@ -1,0 +1,135 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.14.0
+  name: instances.home-assistant.lmatfy.io
+spec:
+  group: home-assistant.lmatfy.io
+  names:
+    kind: Instance
+    listKind: InstanceList
+    plural: instances
+    singular: instance
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Instance is the Schema for the instances API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: InstanceSpec provides the specification of an Instance.
+            properties:
+              host:
+                description: hosts is a list of hosts containing Ingress and Secret
+                  information.
+                items:
+                  description: InstanceHost describes a single host pointing to a
+                    Home Assistant service.
+                  properties:
+                    host:
+                      description: host is the host which points to the Home Assistant
+                        Service.
+                      type: string
+                    ingressClassName:
+                      description: |-
+                        ingressClassName is the name of an IngressClass cluster resource. It defaults to
+                        the clusters default IngressClass class.
+                      type: string
+                    path:
+                      description: path is the path used for Ingress. It defaults
+                        to "/".
+                      type: string
+                    secretName:
+                      description: |-
+                        secretName of an existing Secret containing the TLS certificate. It defaults to
+                        a generated name containing the name of the Instance resource.
+                      type: string
+                    servicePort:
+                      description: servicePort is the port of the Home Assistant service.
+                        It defaults to 8123.
+                      format: int32
+                      type: integer
+                  type: object
+                type: array
+              service:
+                description: service is the Home Assistant service.
+                properties:
+                  ports:
+                    description: port is a list of service and pod ports.
+                    items:
+                      description: InstanceServicePort describes a ports of the for
+                        Home Assistant service.
+                      properties:
+                        nodePort:
+                          description: |-
+                            The port on each node on which this service is exposed when type is
+                            NodePort or LoadBalancer.  Usually assigned by the system. If a value is
+                            specified, in-range, and not in use it will be used, otherwise the
+                            operation will fail.  If not specified, a port will be allocated if this
+                            Service requires one.  If this field is specified when creating a
+                            Service which does not need it, creation will fail. This field will be
+                            wiped when updating a Service to no longer need it (e.g. changing type
+                            from NodePort to ClusterIP).
+                            More info: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
+                          format: int32
+                          type: integer
+                        podPort:
+                          description: podPort is the port of the Home Assistant pod.
+                          format: int32
+                          type: integer
+                        servicePort:
+                          description: servicePort is the port of the Home Assistant
+                            service.
+                          format: int32
+                          type: integer
+                      type: object
+                    type: array
+                  type:
+                    description: |-
+                      type determines how the Service is exposed. Defaults to ClusterIP. Valid
+                      options are ClusterIP, NodePort, and LoadBalancer.
+                      "ClusterIP" allocates a cluster-internal IP address for load-balancing
+                      to endpoints. Endpoints are determined by the selector or if that is not
+                      specified, by manual construction of an Endpoints object or
+                      EndpointSlice objects. If clusterIP is "None", no virtual IP is
+                      allocated and the endpoints are published as a set of endpoints rather
+                      than a virtual IP.
+                      "NodePort" builds on ClusterIP and allocates a port on every node which
+                      routes to the same endpoints as the clusterIP.
+                      "LoadBalancer" builds on NodePort and creates an external load-balancer
+                      (if supported in the current cloud) which routes to the same endpoints
+                      as the clusterIP.
+                    type: string
+                type: object
+              version:
+                description: version is the actual Home Assistant version to be installed.
+                type: string
+            type: object
+          status:
+            description: InstanceStatus defines the observed state of Instance.
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
