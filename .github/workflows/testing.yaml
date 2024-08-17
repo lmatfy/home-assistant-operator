@@ -1,0 +1,38 @@
+name: Testing
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - uses: actions/checkout@v4
+      - run: make test
+
+  e2e-tests:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: engineerd/setup-kind@v0.5.0
+        with:
+          wait: 30s
+          version: v0.11.1
+          image: kindest/node:v1.20.7
+
+      - uses: actions/setup-go@v5
+      - name: Install Operator SDK
+        run: |
+          curl -LO https://github.com/operator-framework/operator-sdk/releases/download/v1.36.1/operator-sdk_linux_amd64
+          chmod +x operator-sdk_linux_amd64
+          mv operator-sdk_linux_amd64 /usr/local/bin/operator-sdk
+
+# TODO: can be enabled if the first CRD exists.
+#      - run: make test-e2e
