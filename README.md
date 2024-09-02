@@ -1,3 +1,5 @@
+[![Coverage](https://github.com/lmatfy/home-assistant-operator/wiki/coverage.svg)](https://raw.githack.com/wiki/lmatfy/home-assistant-operator/coverage.html)
+
 # Home Assistant Kubernetes Operator
 
 A Kubernetes Operator designed to manage multiple [Home Assistant](https://www.home-assistant.io/) installations and their resources in a declarative manner.
