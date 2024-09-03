@@ -64,5 +64,4 @@ jobs:
           chmod +x operator-sdk_linux_amd64
           mv operator-sdk_linux_amd64 /usr/local/bin/operator-sdk
 
-# TODO: can be enabled if the first CRD exists.
-#      - run: make test-e2e
+      - run: make test-e2e
